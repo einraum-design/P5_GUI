@@ -22,13 +22,16 @@ void setup() {
   // Standart Button
   button = new Button(20, 20, 130, 30); // x, y, w, h
   
+  // mit TextLabel
   labelButton1 = new LabelButton("Button1", 400, 20, 160, 22);
   labelButton2 = new LabelButton("Button2", 400, 60, 160, 22);
+  // zeichen von der Mitte:
   labelButton2.drawMode = CENTER;
   labelButton3 = new LabelButton("Button3", 400, 100, 160, 22);
+  // Label linksbündig
   labelButton3.textAlign = RIGHT;
   
-  
+  // Bild Button
   imageButton = new ImageButton(loadImage("normal.png"), loadImage("aktiv.png"), loadImage("hover.png"), 300, 300);
 
 
@@ -45,11 +48,12 @@ void draw() {
   background(255);
 
 
-  // 
+  // check ob einfacher Button gerade gedrückt ist
   if (button.buttonStatus == true) {
     println("b clicked");
   } 
 
+  // am Ende der draw Buttons zeichnen
   button.render();
   labelButton1.render();
   labelButton2.render();
@@ -60,12 +64,14 @@ void draw() {
   labelToggleButton.render();
   imageToggleButton.render();
 
-
+  // slider.getValue gibt sliderValue 0 - 1 zurück
   text("sliderValue: " + slider.getValue(), slider.sliderX, slider.sliderY + 60);
   slider.render();
 }
 
 void mousePressed() {
+  
+  // allen Buttons das mousePressed Event mitgehben (nur wenn im moment auch gezeichnet)
   button.mousePressed();
   labelButton1.mousePressed();
   labelButton2.mousePressed();
@@ -78,6 +84,7 @@ void mousePressed() {
 }
 
 void mouseReleased() {
+  // allen Buttons das mouseReleased Event mitgehben (nur wenn im moment auch gezeichnet)
   button.mouseReleased();
   labelButton1.mouseReleased();
   labelButton2.mouseReleased();
