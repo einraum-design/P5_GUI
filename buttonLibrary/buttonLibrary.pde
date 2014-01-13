@@ -48,10 +48,16 @@ void draw() {
   background(255);
 
 
+
+  // über die eigenschaft buttonName.buttonStatus könnt ihr abfragen, 
+  // ob der button an oder aus ist. funktioniert bei allen Button Typen
+
   // check ob einfacher Button gerade gedrückt ist
   if (button.buttonStatus == true) {
-    println("b clicked");
+    println("button clicked");
   } 
+  
+  
 
   // am Ende der draw Buttons zeichnen
   button.render();
