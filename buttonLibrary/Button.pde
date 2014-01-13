@@ -3,6 +3,7 @@ class Button {
   float buttonX, buttonY, buttonWidth, buttonHeight = 0;
   int drawMode = CORNER;
   boolean buttonStatus = false;
+  boolean buttonActive = false;
 
   color buttonColor = color(120);
   color buttonColorHover = color(180);
@@ -45,8 +46,13 @@ class Button {
       buttonStatus = false;
     }
 
+    if (buttonActive) {
+      fill(buttonColorActive);
+    }
+
     rect(buttonX, buttonY, buttonWidth, buttonHeight);
   }
+
 
 
   boolean mouseOver() {
@@ -72,6 +78,166 @@ class Button {
   void mouseReleased() {
     if (mouseOver()) {
       buttonStatus = true;
+      buttonActive = false;
+    }
+  }
+
+  void mousePressed() {
+    if (mouseOver()) {
+      buttonActive = true;
+    }
+  }
+}
+
+class LabelButton extends Button {
+  String label;
+  int textAlign = CENTER;
+  color textColor = color(0);
+  float paddingX = 3;
+  float paddingY = 2;
+
+  LabelButton() {
+    super(0, 0, 120, 40);
+    label = "label";
+  }
+
+  LabelButton(String label) {
+    super(0, 0, 120, 40);
+    this.label = label;
+  }
+
+  LabelButton(String label, float buttonX, float buttonY, float buttonWidth, float buttonHeight) {
+    super(buttonX, buttonY, buttonWidth, buttonHeight);
+    this.label = label;
+  }
+
+  void render() {
+    rectMode(drawMode);
+
+    // hover state
+    if (mouseOver()) {
+      fill(buttonColorHover);
+    } 
+    else {
+      fill(buttonColor);
+    }
+
+    // active state
+    if (buttonStatus) {
+      fill(buttonColorActive);
+      buttonStatus = false;
+    }
+
+    if (buttonActive) {
+      fill(buttonColorActive);
+    }
+
+    rect(buttonX, buttonY, buttonWidth, buttonHeight);
+
+    fill(textColor);
+    switch(textAlign) {
+    case LEFT:
+      if (drawMode == CENTER) {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX - buttonWidth/2 + paddingX, buttonY);
+      } 
+      else {
+        textAlign(textAlign, TOP);
+        text(label, buttonX + paddingX, buttonY + paddingY);
+        }
+        break;
+    case RIGHT:
+      if (drawMode == CENTER) {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX + buttonWidth/2 - paddingX, buttonY);
+      } 
+      else {
+        textAlign(textAlign, TOP);
+        text(label, buttonX + buttonWidth - paddingX, buttonY + paddingY);
+      }
+      break;
+
+    case CENTER:
+      if (drawMode == CENTER) {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX, buttonY);
+      } 
+      else {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX + buttonWidth/2.0, buttonY + buttonHeight/2.0);
+      }
+      break;
+    }
+  }
+}
+
+class ImageButton extends Button {
+  PImage buttonImage = null;
+  PImage buttonImageHover = null;
+  PImage buttonImageActive = null;
+
+
+  ImageButton() {
+    // no Image!
+    super();
+  }
+
+  ImageButton(PImage buttonImage) {
+    super(0.0, 0.0, (float)buttonImage.width, (float)buttonImage.height);
+    this.buttonImage = buttonImage;
+  }
+
+  ImageButton(PImage buttonImage, float buttonX, float buttonY) {
+    super(buttonX, buttonY, buttonImage.width, buttonImage.height);
+    this.buttonImage = buttonImage;
+  }
+
+  ImageButton(PImage buttonImage, PImage buttonImageActive, float buttonX, float buttonY) {
+    super(buttonX, buttonY, buttonImage.width, buttonImage.height);
+    this.buttonImage = buttonImage;
+    this.buttonImageActive = buttonImageActive;
+  }
+
+  ImageButton(PImage buttonImage, PImage buttonImageActive, PImage buttonImageHover, float buttonX, float buttonY) {
+    super(buttonX, buttonY, buttonImage.width, buttonImage.height);
+    this.buttonImage = buttonImage;
+    this.buttonImageActive = buttonImageActive;
+    this.buttonImageHover = buttonImageHover;
+  }
+
+  void render() {
+    if (drawMode == CORNER) {
+      imageMode(CORNER);
+    }     
+    else if (drawMode == CENTER) {
+      imageMode(CENTER);
+    }
+
+    // hover state
+    if (mouseOver()) {
+      if (buttonImageHover != null) {
+        image(buttonImageHover, buttonX, buttonY);
+      }
+      else {
+        image(buttonImage, buttonX, buttonY);
+      }
+    } 
+    else {
+      image(buttonImage, buttonX, buttonY);
+    }
+
+    // active state
+    if (buttonStatus) {
+      if (buttonImageActive != null) {
+        image(buttonImageActive, buttonX, buttonY);
+        buttonStatus = false;
+      }
+    }
+
+    if (buttonActive) {
+      if (buttonImageActive != null) {
+        image(buttonImageActive, buttonX, buttonY);
+      }
     }
   }
 }
@@ -108,48 +274,123 @@ class ToggleButton extends Button {
       fill(buttonColorActive);
     }
 
+    if (buttonActive) {
+      fill(buttonColorActive);
+    }
+
     rect(buttonX, buttonY, buttonWidth, buttonHeight);
   }
 
   void mouseReleased() {
     if (mouseOver()) {
       buttonStatus = !buttonStatus;
+      buttonActive = false;
     }
   }
 }
 
-class ImageButton extends Button{
-  PImage buttonImage = null;
-  PImage buttonImageHover = null;
-  PImage buttonImageActive = null;
+class LabelToggleButton extends LabelButton {
 
+  LabelToggleButton() {
+    super();
+  }
 
-  ImageButton() {
+  LabelToggleButton(String label) {
+    super(label);
+  }
+
+  LabelToggleButton(String label, float buttonX, float buttonY, float buttonWidth, float buttonHeight) {
+    super(label, buttonX, buttonY, buttonWidth, buttonHeight);
+  }
+
+  void render() {
+    rectMode(drawMode);
+
+    // hover state
+    if (mouseOver()) {
+      fill(buttonColorHover);
+    } 
+    else {
+      fill(buttonColor);
+    }
+
+    // active state
+    if (buttonStatus) {
+      fill(buttonColorActive);
+      //buttonStatus = false;
+    }
+
+    if (buttonActive) {
+      fill(buttonColorActive);
+    }
+
+    rect(buttonX, buttonY, buttonWidth, buttonHeight);
+
+    fill(textColor);
+    switch(textAlign) {
+    case LEFT:
+      if (drawMode == CENTER) {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX - buttonWidth/2 + paddingX, buttonY);
+      } 
+      else {
+        textAlign(textAlign, TOP);
+        text(label, buttonX + paddingX, buttonY + paddingY);
+        }
+        break;
+    case RIGHT:
+      if (drawMode == CENTER) {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX + buttonWidth/2 - paddingX, buttonY);
+      } 
+      else {
+        textAlign(textAlign, TOP);
+        text(label, buttonX + buttonWidth - paddingX, buttonY + paddingY);
+      }
+      break;
+
+    case CENTER:
+      if (drawMode == CENTER) {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX, buttonY);
+      } 
+      else {
+        textAlign(textAlign, CENTER);
+        text(label, buttonX + buttonWidth/2.0, buttonY + buttonHeight/2.0);
+      }
+      break;
+    }
+  }
+  
+  void mouseReleased() {
+    if (mouseOver()) {
+      buttonStatus = !buttonStatus;
+      buttonActive = false;
+    }
+  }
+}
+
+class ImageToggleButton extends ImageButton {
+
+  ImageToggleButton() {
     // no Image!
     super();
   }
 
-  ImageButton(PImage buttonImage) {
-    super(0.0, 0.0, (float)buttonImage.width, (float)buttonImage.height);
-    this.buttonImage = buttonImage;
+  ImageToggleButton(PImage buttonImage) {
+    super(buttonImage);
   }
 
-  ImageButton(PImage buttonImage, float buttonX, float buttonY) {
-    super(buttonX, buttonY, buttonImage.width, buttonImage.height);
-    this.buttonImage = buttonImage;
+  ImageToggleButton(PImage buttonImage, float buttonX, float buttonY) {
+    super(buttonImage, buttonX, buttonY);
   }
 
-  ImageButton(PImage buttonImage, PImage buttonImageActive, float buttonX, float buttonY) {
-    super(buttonX, buttonY, buttonImage.width, buttonImage.height);
-    this.buttonImage = buttonImage;
-    this.buttonImageActive = buttonImageActive;
+  ImageToggleButton(PImage buttonImage, PImage buttonImageActive, float buttonX, float buttonY) {
+    super(buttonImage, buttonImageActive, buttonX, buttonY);
   }
-  
-  ImageButton(PImage buttonImage, PImage buttonImageActive, PImage buttonImageHover, float buttonX, float buttonY) {
-    super(buttonX, buttonY, buttonImage.width, buttonImage.height);
-    this.buttonImage = buttonImage;
-    this.buttonImageActive = buttonImageActive;
-    this.buttonImageHover = buttonImageHover;
+
+  ImageToggleButton(PImage buttonImage, PImage buttonImageActive, PImage buttonImageHover, float buttonX, float buttonY) {
+    super(buttonImage, buttonImageActive, buttonImageHover, buttonX, buttonY);
   }
 
   void render() {
@@ -177,8 +418,20 @@ class ImageButton extends Button{
     if (buttonStatus) {
       if (buttonImageActive != null) {
         image(buttonImageActive, buttonX, buttonY);
-        buttonStatus = false;
       }
+    }
+
+    if (buttonActive) {
+      if (buttonImageActive != null) {
+        image(buttonImageActive, buttonX, buttonY);
+      }
+    }
+  }
+
+  void mouseReleased() {
+    if (mouseOver()) {
+      buttonStatus = !buttonStatus;
+      buttonActive = false;
     }
   }
 }
@@ -205,12 +458,12 @@ class Slider {
   }
 
   void render() {
-    
-    if(mousePressed && mouseOver()){
+
+    if (mousePressed && mouseOver()) {
       sliderValue = map(mouseX, sliderX, sliderX + sliderW, 0, 1);
     }
-    
-    
+
+
     if (drawMode == CORNER) {
       rectMode(CORNER);
       fill(sliderBackgroundColor);
@@ -221,7 +474,10 @@ class Slider {
       rect(sliderX + sliderValue * sliderW - markerW/2, sliderY-2, markerW, sliderH + 4);
     }
   }
-  
+
+  float getValue() {
+    return sliderValue;
+  }
   boolean mouseOver() {
     if (drawMode == CORNER) {
       if (mouseX >= sliderX && mouseX < sliderX + sliderW && mouseY >= sliderY && mouseY < sliderY + sliderH) {
@@ -242,3 +498,4 @@ class Slider {
     }
   }
 }
+
