@@ -27,7 +27,7 @@ class Button {
   void render() {
     if (drawMode == CORNER) {
       rectMode(CORNER);
-    }     
+    }
     else if (drawMode == CENTER) {
       rectMode(CENTER);
     }
@@ -35,7 +35,7 @@ class Button {
     // hover state
     if (mouseOver()) {
       fill(buttonColorHover);
-    } 
+    }
     else {
       fill(buttonColor);
     }
@@ -60,15 +60,15 @@ class Button {
       if (mouseX >= buttonX && mouseX < buttonX + buttonWidth && mouseY >= buttonY && mouseY < buttonY + buttonHeight) {
         //println();
         return true;
-      } 
+      }
       else {
         return false;
       }
-    } 
+    }
     else { // if(drawMode == CENTER)
       if (mouseX >= buttonX - buttonWidth/2 && mouseX < buttonX + buttonWidth / 2 && mouseY >= buttonY - buttonHeight/2 && mouseY < buttonY + buttonHeight/2) {
         return true;
-      } 
+      }
       else {
         return false;
       }
@@ -95,6 +95,8 @@ class LabelButton extends Button {
   color textColor = color(0);
   float paddingX = 3;
   float paddingY = 2;
+  PFont font = null;
+  int fontSize = 18;
 
   LabelButton() {
     super(0, 0, 120, 40);
@@ -111,13 +113,20 @@ class LabelButton extends Button {
     this.label = label;
   }
 
+  LabelButton(String label, float buttonX, float buttonY, float buttonWidth, float buttonHeight, PFont font, int fontSize) {
+    super(buttonX, buttonY, buttonWidth, buttonHeight);
+    this.font = font;
+    this.fontSize = fontSize;
+    this.label = label;
+  }
+
   void render() {
     rectMode(drawMode);
 
     // hover state
     if (mouseOver()) {
       fill(buttonColorHover);
-    } 
+    }
     else {
       fill(buttonColor);
     }
@@ -135,6 +144,12 @@ class LabelButton extends Button {
     rect(buttonX, buttonY, buttonWidth, buttonHeight);
 
     fill(textColor);
+
+    if (font != null) {
+      textFont(font, fontSize);
+    }
+
+
     switch(textAlign) {
     case LEFT:
       if (drawMode == CENTER) {
@@ -144,8 +159,8 @@ class LabelButton extends Button {
       else {
         textAlign(textAlign, TOP);
         text(label, buttonX + paddingX, buttonY + paddingY);
-        }
-        break;
+      }
+      break;
     case RIGHT:
       if (drawMode == CENTER) {
         textAlign(textAlign, CENTER);
@@ -208,7 +223,7 @@ class ImageButton extends Button {
   void render() {
     if (drawMode == CORNER) {
       imageMode(CORNER);
-    }     
+    }
     else if (drawMode == CENTER) {
       imageMode(CENTER);
     }
@@ -221,7 +236,7 @@ class ImageButton extends Button {
       else {
         image(buttonImage, buttonX, buttonY);
       }
-    } 
+    }
     else {
       image(buttonImage, buttonX, buttonY);
     }
@@ -256,7 +271,7 @@ class ToggleButton extends Button {
 
     if (drawMode == CORNER) {
       rectMode(CORNER);
-    }     
+    }
     else if (drawMode == CENTER) {
       rectMode(CENTER);
     }
@@ -264,7 +279,7 @@ class ToggleButton extends Button {
     // hover state
     if (mouseOver()) {
       fill(buttonColorHover);
-    } 
+    }
     else {
       fill(buttonColor);
     }
@@ -302,6 +317,12 @@ class LabelToggleButton extends LabelButton {
   LabelToggleButton(String label, float buttonX, float buttonY, float buttonWidth, float buttonHeight) {
     super(label, buttonX, buttonY, buttonWidth, buttonHeight);
   }
+  
+  LabelToggleButton(String label, float buttonX, float buttonY, float buttonWidth, float buttonHeight, PFont font, int fontSize) {
+    super(label, buttonX, buttonY, buttonWidth, buttonHeight);
+    this.font = font;
+    this.fontSize = fontSize;
+  }
 
   void render() {
     rectMode(drawMode);
@@ -309,7 +330,7 @@ class LabelToggleButton extends LabelButton {
     // hover state
     if (mouseOver()) {
       fill(buttonColorHover);
-    } 
+    }
     else {
       fill(buttonColor);
     }
@@ -325,24 +346,26 @@ class LabelToggleButton extends LabelButton {
     }
 
     rect(buttonX, buttonY, buttonWidth, buttonHeight);
-
+    if (font != null) {
+      textFont(font, fontSize);
+    }
     fill(textColor);
     switch(textAlign) {
     case LEFT:
       if (drawMode == CENTER) {
         textAlign(textAlign, CENTER);
         text(label, buttonX - buttonWidth/2 + paddingX, buttonY);
-      } 
+      }
       else {
         textAlign(textAlign, TOP);
         text(label, buttonX + paddingX, buttonY + paddingY);
-        }
-        break;
+      }
+      break;
     case RIGHT:
       if (drawMode == CENTER) {
         textAlign(textAlign, CENTER);
         text(label, buttonX + buttonWidth/2 - paddingX, buttonY);
-      } 
+      }
       else {
         textAlign(textAlign, TOP);
         text(label, buttonX + buttonWidth - paddingX, buttonY + paddingY);
@@ -353,7 +376,7 @@ class LabelToggleButton extends LabelButton {
       if (drawMode == CENTER) {
         textAlign(textAlign, CENTER);
         text(label, buttonX, buttonY);
-      } 
+      }
       else {
         textAlign(textAlign, CENTER);
         text(label, buttonX + buttonWidth/2.0, buttonY + buttonHeight/2.0);
@@ -361,7 +384,7 @@ class LabelToggleButton extends LabelButton {
       break;
     }
   }
-  
+
   void mouseReleased() {
     if (mouseOver()) {
       buttonStatus = !buttonStatus;
@@ -396,7 +419,7 @@ class ImageToggleButton extends ImageButton {
   void render() {
     if (drawMode == CORNER) {
       imageMode(CORNER);
-    }     
+    }
     else if (drawMode == CENTER) {
       imageMode(CENTER);
     }
@@ -409,7 +432,7 @@ class ImageToggleButton extends ImageButton {
       else {
         image(buttonImage, buttonX, buttonY);
       }
-    } 
+    }
     else {
       image(buttonImage, buttonX, buttonY);
     }
